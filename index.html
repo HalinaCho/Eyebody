@@ -15,11 +15,17 @@
     <div class="header-inner">
       <span class="logo">👁 EyeBody</span>
       <div class="header-right">
-        <span class="child-selector">민준 <span class="caret">▾</span></span>
+        <button class="child-selector" id="childSelectorBtn" onclick="toggleChildDropdown()">
+          <span id="childSelectorName">—</span> <span class="caret">▾</span>
+        </button>
         <span class="icon-btn">🔔</span>
       </div>
     </div>
   </header>
+
+  <!-- Child dropdown -->
+  <div class="child-dropdown" id="childDropdown"><!-- JS --></div>
+  <div class="dropdown-backdrop" id="dropdownBackdrop" onclick="closeChildDropdown()"></div>
 
   <main class="page-wrap">
 
@@ -265,18 +271,14 @@
 
     <!-- ── SETTINGS ───────────────────────────────── -->
     <section class="page" id="pageSettings">
-      <div class="settings-profile">
-        <div class="profile-avatar">👦</div>
-        <div>
-          <div class="profile-name">김민준</div>
-          <div class="profile-sub">만 9세 · 2017년 3월생</div>
-        </div>
-        <button class="small-btn" onclick="openModal('childModal')">편집</button>
-      </div>
+      <div class="settings-profile" id="settingsProfile"><!-- JS --></div>
 
       <div class="settings-group">
         <div class="sg-label">자녀 관리</div>
-        <div class="sg-item" onclick="openModal('childModal')"><span class="sg-icon">👶</span> 자녀 프로필 수정 <span class="sg-arr">›</span></div>
+        <div id="childrenList"><!-- JS --></div>
+        <div class="sg-item" onclick="openAddChildModal()">
+          <span class="sg-icon">➕</span> 자녀 추가 <span class="sg-arr">›</span>
+        </div>
         <div class="sg-item"><span class="sg-icon">👥</span> 보호자 초대 <span class="sg-arr">›</span></div>
       </div>
 
@@ -392,23 +394,26 @@
   </div>
 </div>
 
-<div class="modal-overlay" id="childModal">
+<div class="modal-overlay" id="childFormModal">
   <div class="modal">
     <div class="modal-header">
-      <span class="modal-title">자녀 프로필</span>
-      <button class="modal-close" onclick="closeModal('childModal')">✕</button>
+      <span class="modal-title" id="childFormTitle">자녀 추가</span>
+      <button class="modal-close" onclick="closeModal('childFormModal')">✕</button>
     </div>
     <div class="modal-body">
       <label class="form-label">이름</label>
-      <input class="form-input" type="text" value="김민준" />
+      <input class="form-input" type="text" id="childFormName" placeholder="자녀 이름" />
       <label class="form-label">생년월일</label>
-      <input class="form-input" type="date" value="2017-03-15" />
+      <input class="form-input" type="date" id="childFormBirth" />
       <label class="form-label">성별</label>
-      <select class="form-input"><option selected>남자</option><option>여자</option></select>
+      <select class="form-input" id="childFormGender">
+        <option value="M">남자</option>
+        <option value="F">여자</option>
+      </select>
     </div>
     <div class="modal-footer">
-      <button class="btn-secondary" onclick="closeModal('childModal')">취소</button>
-      <button class="btn-primary" onclick="closeModal('childModal');showToast('저장되었습니다')">저장</button>
+      <button class="btn-secondary" onclick="closeModal('childFormModal')">취소</button>
+      <button class="btn-primary" onclick="saveChildForm()">저장</button>
     </div>
   </div>
 </div>

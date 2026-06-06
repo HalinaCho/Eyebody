@@ -241,6 +241,31 @@ input:checked + .slider::before { transform: translateX(20px); }
 .toast { position: fixed; bottom: calc(var(--nav-h) + 12px); left: 50%; transform: translateX(-50%) translateY(20px); background: var(--gray-800); color: white; padding: 10px 20px; border-radius: 20px; font-size: 14px; font-weight: 600; opacity: 0; pointer-events: none; transition: all .3s; z-index: 300; white-space: nowrap; }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+/* ── Child selector button ───────────────── */
+.child-selector { background: var(--gray-100); border: none; padding: 4px 10px; border-radius: 20px; font-size: 14px; font-weight: 600; color: var(--gray-800); cursor: pointer; display: flex; align-items: center; gap: 4px; }
+
+/* ── Child dropdown ───────────────────────── */
+.child-dropdown { display:none; position:fixed; top:var(--header-h); left:0; right:0; max-width:430px; margin:0 auto; background:var(--white); border-bottom:1px solid var(--gray-200); box-shadow:0 6px 20px rgba(0,0,0,.12); z-index:90; border-radius:0 0 16px 16px; overflow:hidden; }
+.child-dropdown.open { display:block; }
+.dropdown-backdrop { display:none; position:fixed; inset:0; z-index:89; }
+.dropdown-backdrop.open { display:block; }
+
+.cd-item { display:flex; align-items:center; gap:12px; padding:14px 20px; cursor:pointer; transition:background .15s; }
+.cd-item:hover { background:var(--gray-50); }
+.cd-active { background:#EFF6FF; }
+.cd-av   { font-size:28px; }
+.cd-info { flex:1; }
+.cd-name { font-size:15px; font-weight:700; }
+.cd-age  { font-size:12px; color:var(--gray-400); margin-top:2px; }
+.cd-check { color:var(--primary); font-size:16px; font-weight:700; }
+.cd-add { display:flex; align-items:center; gap:10px; padding:14px 20px; color:var(--primary); font-size:14px; font-weight:700; cursor:pointer; border-top:1px solid var(--gray-100); }
+.cd-add:hover { background:var(--gray-50); }
+
+/* ── Settings child list ──────────────────── */
+.child-list-item { gap:10px; }
+.icon-action { background:none; border:none; font-size:16px; cursor:pointer; padding:4px; border-radius:6px; }
+.icon-action:hover { background:var(--gray-100); }
+
 /* ── Streak row ───────────────────────────── */
 .streak-row { display: flex; align-items: center; justify-content: space-around; padding: 4px 0 12px; }
 .streak-item { text-align: center; flex: 1; }
