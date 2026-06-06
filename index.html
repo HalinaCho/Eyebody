@@ -8,561 +8,394 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div id="app">
-    <!-- Header -->
-    <header class="app-header">
-      <div class="header-inner">
-        <span class="logo">👁 EyeBody</span>
-        <div class="header-right">
-          <span class="child-selector" id="childSelector">
-            민준 <span class="caret">▾</span>
-          </span>
-          <span class="icon-btn" id="notifBtn">🔔</span>
-        </div>
-      </div>
-    </header>
+<div id="app">
 
-    <!-- Pages -->
-    <main class="page-wrap">
-
-      <!-- ── HOME ─────────────────────────────── -->
-      <section class="page active" id="pageHome">
-
-        <div class="status-banner status-yellow">
-          <span class="status-icon">👁</span>
-          <div>
-            <div class="status-title">안축장 주의 구간</div>
-            <div class="status-sub">최근 6개월 +0.28 mm 성장</div>
-          </div>
-          <span class="status-badge watch">WATCH</span>
-        </div>
-
-        <!-- Today's treatment -->
-        <div class="section-card">
-          <div class="section-header">
-            <span class="section-title">오늘의 치료</span>
-            <span class="section-date" id="todayDate"></span>
-          </div>
-          <div class="treatment-list">
-            <div class="treatment-item done">
-              <span class="check-circle done">✓</span>
-              <div>
-                <div class="t-name">아트로핀 점안</div>
-                <div class="t-time">취침 전 1회</div>
-              </div>
-              <span class="t-tag atropine">완료</span>
-            </div>
-            <div class="treatment-item pending">
-              <span class="check-circle pending" onclick="toggleTreatment(this)">○</span>
-              <div>
-                <div class="t-name">드림렌즈 착용</div>
-                <div class="t-time">취침 시</div>
-              </div>
-              <span class="t-tag dreamlens">미완료</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Axial length summary -->
-        <div class="section-card">
-          <div class="section-header">
-            <span class="section-title">안축장 현황</span>
-            <button class="link-btn" onclick="navigate('pageAnalytics')">전체 보기 →</button>
-          </div>
-          <div class="axial-summary">
-            <div class="axial-eye">
-              <div class="eye-label">우안 (OD)</div>
-              <div class="axial-value">24.82 <span class="unit">mm</span></div>
-              <div class="axial-change up">▲ +0.14 mm (3개월)</div>
-            </div>
-            <div class="divider-v"></div>
-            <div class="axial-eye">
-              <div class="eye-label">좌안 (OS)</div>
-              <div class="axial-value">24.91 <span class="unit">mm</span></div>
-              <div class="axial-change up">▲ +0.16 mm (3개월)</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Next appointment -->
-        <div class="section-card row-card">
-          <span class="card-icon">🏥</span>
-          <div>
-            <div class="card-label">다음 진료일</div>
-            <div class="card-value">2026년 7월 3일 (목)</div>
-            <div class="card-sub">한빛안과의원 · D-27</div>
-          </div>
-          <button class="small-btn">예약</button>
-        </div>
-
-        <!-- Compliance -->
-        <div class="section-card">
-          <div class="section-header">
-            <span class="section-title">이번 달 치료 순응도</span>
-            <span class="compliance-pct">86%</span>
-          </div>
-          <div class="progress-bar-wrap">
-            <div class="progress-bar" style="width:86%"></div>
-          </div>
-          <div class="compliance-legend">
-            <span class="legend good">■ 완료 26일</span>
-            <span class="legend miss">■ 미완료 4일</span>
-          </div>
-        </div>
-
-        <!-- Lifestyle -->
-        <div class="section-card">
-          <div class="section-header">
-            <span class="section-title">오늘의 생활습관</span>
-          </div>
-          <div class="lifestyle-row">
-            <div class="lifestyle-item">
-              <div class="life-icon">📱</div>
-              <div class="life-label">스마트폰</div>
-              <div class="life-value warn">2h 40m</div>
-            </div>
-            <div class="lifestyle-item">
-              <div class="life-icon">🌳</div>
-              <div class="life-label">야외활동</div>
-              <div class="life-value good">1h 20m</div>
-            </div>
-            <div class="lifestyle-item">
-              <div class="life-icon">😴</div>
-              <div class="life-label">수면</div>
-              <div class="life-value good">9h 10m</div>
-            </div>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- ── RECORDS ────────────────────────────── -->
-      <section class="page" id="pageRecords">
-
-        <div class="tab-bar">
-          <button class="tab active" onclick="switchTab(this,'tabExam')">검사기록</button>
-          <button class="tab" onclick="switchTab(this,'tabTreatment')">치료기록</button>
-          <button class="tab" onclick="switchTab(this,'tabLifestyle')">생활습관</button>
-        </div>
-
-        <!-- Exam records -->
-        <div class="tab-panel active" id="tabExam">
-          <button class="fab" onclick="openModal('examModal')">+ 기록 추가</button>
-
-          <div class="record-card">
-            <div class="rec-header">
-              <span class="rec-date">2026-05-12</span>
-              <span class="rec-clinic">한빛안과의원</span>
-            </div>
-            <div class="rec-body">
-              <div class="rec-row">
-                <span class="rec-label">안축장 (OD/OS)</span>
-                <span class="rec-val">24.82 / 24.91 mm</span>
-              </div>
-              <div class="rec-row">
-                <span class="rec-label">SER (OD/OS)</span>
-                <span class="rec-val">-3.25 / -3.50 D</span>
-              </div>
-              <div class="rec-row">
-                <span class="rec-label">교정시력</span>
-                <span class="rec-val">1.0 / 1.0</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="record-card">
-            <div class="rec-header">
-              <span class="rec-date">2026-02-18</span>
-              <span class="rec-clinic">한빛안과의원</span>
-            </div>
-            <div class="rec-body">
-              <div class="rec-row">
-                <span class="rec-label">안축장 (OD/OS)</span>
-                <span class="rec-val">24.68 / 24.75 mm</span>
-              </div>
-              <div class="rec-row">
-                <span class="rec-label">SER (OD/OS)</span>
-                <span class="rec-val">-3.00 / -3.25 D</span>
-              </div>
-              <div class="rec-row">
-                <span class="rec-label">교정시력</span>
-                <span class="rec-val">1.0 / 1.0</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="record-card">
-            <div class="rec-header">
-              <span class="rec-date">2025-11-05</span>
-              <span class="rec-clinic">한빛안과의원</span>
-            </div>
-            <div class="rec-body">
-              <div class="rec-row">
-                <span class="rec-label">안축장 (OD/OS)</span>
-                <span class="rec-val">24.54 / 24.59 mm</span>
-              </div>
-              <div class="rec-row">
-                <span class="rec-label">SER (OD/OS)</span>
-                <span class="rec-val">-2.75 / -3.00 D</span>
-              </div>
-              <div class="rec-row">
-                <span class="rec-label">교정시력</span>
-                <span class="rec-val">1.0 / 1.0</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Treatment records -->
-        <div class="tab-panel" id="tabTreatment">
-          <button class="fab" onclick="openModal('treatModal')">+ 치료 추가</button>
-
-          <div class="treatment-timeline">
-            <div class="tl-item active-tl">
-              <div class="tl-dot active-dot"></div>
-              <div class="tl-card">
-                <div class="tl-header">
-                  <span class="tl-type atropine">저농도 아트로핀 0.025%</span>
-                  <span class="tl-status active-badge">진행 중</span>
-                </div>
-                <div class="tl-date">2024-08-01 ~ 현재</div>
-                <div class="tl-note">취침 전 1회 점안 · 부작용 없음</div>
-              </div>
-            </div>
-            <div class="tl-item">
-              <div class="tl-dot"></div>
-              <div class="tl-card">
-                <div class="tl-header">
-                  <span class="tl-type dreamlens">드림렌즈 (Ortho-K)</span>
-                  <span class="tl-status active-badge">진행 중</span>
-                </div>
-                <div class="tl-date">2025-03-10 ~ 현재</div>
-                <div class="tl-note">야간 착용 · CRT 렌즈 8.5/6.0</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Lifestyle records -->
-        <div class="tab-panel" id="tabLifestyle">
-          <button class="fab" onclick="openModal('lifeModal')">+ 기록 추가</button>
-
-          <div class="lifestyle-chart-wrap">
-            <div class="section-header">
-              <span class="section-title">최근 7일 야외활동</span>
-              <span class="section-date">목표: 2시간/일</span>
-            </div>
-            <canvas id="outdoorChart" height="180"></canvas>
-          </div>
-
-          <div class="lifestyle-chart-wrap" style="margin-top:12px">
-            <div class="section-header">
-              <span class="section-title">최근 7일 스마트폰 사용</span>
-              <span class="section-date">권장: 2시간 이하</span>
-            </div>
-            <canvas id="phoneChart" height="180"></canvas>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- ── ANALYTICS ─────────────────────────── -->
-      <section class="page" id="pageAnalytics">
-
-        <div class="tab-bar">
-          <button class="tab active" onclick="switchTab(this,'tabAxial')">안축장</button>
-          <button class="tab" onclick="switchTab(this,'tabSer')">SER</button>
-          <button class="tab" onclick="switchTab(this,'tabCompliance')">순응도</button>
-        </div>
-
-        <!-- Axial length chart -->
-        <div class="tab-panel active" id="tabAxial">
-          <div class="chart-card">
-            <div class="section-header">
-              <span class="section-title">안축장 변화 추이</span>
-              <div class="legend-row">
-                <span class="dot blue"></span>우안
-                <span class="dot orange"></span>좌안
-              </div>
-            </div>
-            <canvas id="axialChart" height="220"></canvas>
-          </div>
-
-          <div class="growth-rate-card">
-            <div class="gr-title">연간 성장률 분석</div>
-            <div class="gr-row">
-              <span class="gr-label">우안 (최근 6개월 환산)</span>
-              <span class="gr-val watch">+0.28 mm/yr</span>
-              <span class="gr-badge watch">WATCH</span>
-            </div>
-            <div class="gr-row">
-              <span class="gr-label">좌안 (최근 6개월 환산)</span>
-              <span class="gr-val watch">+0.32 mm/yr</span>
-              <span class="gr-badge watch">WATCH</span>
-            </div>
-            <div class="gr-legend">
-              <span class="gr-item stable">■ Stable &lt;0.20</span>
-              <span class="gr-item watch">■ Watch 0.20–0.35</span>
-              <span class="gr-item rapid">■ Rapid &gt;0.35</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- SER chart -->
-        <div class="tab-panel" id="tabSer">
-          <div class="chart-card">
-            <div class="section-header">
-              <span class="section-title">굴절값(SER) 변화</span>
-              <div class="legend-row">
-                <span class="dot blue"></span>우안
-                <span class="dot orange"></span>좌안
-              </div>
-            </div>
-            <canvas id="serChart" height="220"></canvas>
-          </div>
-          <div class="info-box">
-            <div class="info-title">ℹ SER 해석 가이드</div>
-            <div class="info-text">SER(Spherical Equivalent Refraction)은 근시 정도를 나타내는 굴절값입니다. 음수가 클수록 근시가 강합니다. 연간 −0.50D 이상 진행 시 전문의 상담을 권장합니다.</div>
-          </div>
-        </div>
-
-        <!-- Compliance chart -->
-        <div class="tab-panel" id="tabCompliance">
-          <div class="chart-card">
-            <div class="section-header">
-              <span class="section-title">월별 치료 순응도</span>
-            </div>
-            <canvas id="complianceChart" height="220"></canvas>
-          </div>
-          <div class="compliance-summary">
-            <div class="cs-item">
-              <div class="cs-val">86%</div>
-              <div class="cs-label">이번 달</div>
-            </div>
-            <div class="cs-item">
-              <div class="cs-val">89%</div>
-              <div class="cs-label">3개월 평균</div>
-            </div>
-            <div class="cs-item">
-              <div class="cs-val">91%</div>
-              <div class="cs-label">누적 평균</div>
-            </div>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- ── SETTINGS ───────────────────────────── -->
-      <section class="page" id="pageSettings">
-
-        <div class="settings-profile">
-          <div class="profile-avatar">👦</div>
-          <div>
-            <div class="profile-name">김민준</div>
-            <div class="profile-sub">만 9세 · 2017년 3월생</div>
-          </div>
-          <button class="small-btn" onclick="openModal('childModal')">편집</button>
-        </div>
-
-        <div class="settings-group">
-          <div class="sg-label">자녀 관리</div>
-          <div class="sg-item" onclick="openModal('childModal')">
-            <span class="sg-icon">👶</span> 자녀 프로필 수정 <span class="sg-arr">›</span>
-          </div>
-          <div class="sg-item">
-            <span class="sg-icon">👥</span> 보호자 초대 <span class="sg-arr">›</span>
-          </div>
-        </div>
-
-        <div class="settings-group">
-          <div class="sg-label">알림 관리</div>
-          <div class="sg-item toggle-item">
-            <span><span class="sg-icon">🔔</span> 치료 알림</span>
-            <label class="toggle"><input type="checkbox" checked /><span class="slider"></span></label>
-          </div>
-          <div class="sg-item toggle-item">
-            <span><span class="sg-icon">📅</span> 진료 일정 알림</span>
-            <label class="toggle"><input type="checkbox" checked /><span class="slider"></span></label>
-          </div>
-          <div class="sg-item toggle-item">
-            <span><span class="sg-icon">📊</span> 월간 리포트</span>
-            <label class="toggle"><input type="checkbox" /></span></label>
-          </div>
-        </div>
-
-        <div class="settings-group">
-          <div class="sg-label">계정</div>
-          <div class="sg-item">
-            <span class="sg-icon">👤</span> jhl8397@gmail.com <span class="sg-arr">›</span>
-          </div>
-          <div class="sg-item">
-            <span class="sg-icon">🔒</span> 개인정보 처리방침 <span class="sg-arr">›</span>
-          </div>
-          <div class="sg-item text-danger">
-            <span class="sg-icon">🚪</span> 로그아웃
-          </div>
-        </div>
-
-        <div class="app-version">EyeBody v0.1.0 (Demo)</div>
-      </section>
-
-    </main>
-
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-      <button class="nav-btn active" onclick="navigate('pageHome')" id="navHome">
-        <span class="nav-icon">🏠</span>
-        <span class="nav-label">홈</span>
-      </button>
-      <button class="nav-btn" onclick="navigate('pageRecords')" id="navRecords">
-        <span class="nav-icon">📋</span>
-        <span class="nav-label">기록</span>
-      </button>
-      <button class="nav-btn" onclick="navigate('pageAnalytics')" id="navAnalytics">
-        <span class="nav-icon">📊</span>
-        <span class="nav-label">분석</span>
-      </button>
-      <button class="nav-btn" onclick="navigate('pageSettings')" id="navSettings">
-        <span class="nav-icon">⚙️</span>
-        <span class="nav-label">설정</span>
-      </button>
-    </nav>
-  </div>
-
-  <!-- ── Modals ─────────────────────────────── -->
-
-  <!-- Exam record modal -->
-  <div class="modal-overlay" id="examModal">
-    <div class="modal">
-      <div class="modal-header">
-        <span class="modal-title">검사기록 추가</span>
-        <button class="modal-close" onclick="closeModal('examModal')">✕</button>
-      </div>
-      <div class="modal-body">
-        <label class="form-label">검사일</label>
-        <input class="form-input" type="date" id="examDate" />
-
-        <label class="form-label">안과</label>
-        <input class="form-input" type="text" placeholder="병원명" />
-
-        <div class="form-row">
-          <div>
-            <label class="form-label">안축장 우안 (mm)</label>
-            <input class="form-input" type="number" step="0.01" placeholder="예: 24.82" />
-          </div>
-          <div>
-            <label class="form-label">안축장 좌안 (mm)</label>
-            <input class="form-input" type="number" step="0.01" placeholder="예: 24.91" />
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div>
-            <label class="form-label">SER 우안 (D)</label>
-            <input class="form-input" type="number" step="0.25" placeholder="예: -3.25" />
-          </div>
-          <div>
-            <label class="form-label">SER 좌안 (D)</label>
-            <input class="form-input" type="number" step="0.25" placeholder="예: -3.50" />
-          </div>
-        </div>
-
-        <label class="form-label">메모</label>
-        <textarea class="form-input" rows="2" placeholder="특이사항 등"></textarea>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-secondary" onclick="closeModal('examModal')">취소</button>
-        <button class="btn-primary" onclick="saveRecord('examModal')">저장</button>
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-inner">
+      <span class="logo">👁 EyeBody</span>
+      <div class="header-right">
+        <span class="child-selector">민준 <span class="caret">▾</span></span>
+        <span class="icon-btn">🔔</span>
       </div>
     </div>
-  </div>
+  </header>
 
-  <!-- Treatment modal -->
-  <div class="modal-overlay" id="treatModal">
-    <div class="modal">
-      <div class="modal-header">
-        <span class="modal-title">치료기록 추가</span>
-        <button class="modal-close" onclick="closeModal('treatModal')">✕</button>
-      </div>
-      <div class="modal-body">
-        <label class="form-label">치료 종류</label>
-        <select class="form-input">
-          <option>저농도 아트로핀</option>
-          <option>드림렌즈 (Ortho-K)</option>
-          <option>MiSight</option>
-          <option>복합치료</option>
-        </select>
+  <main class="page-wrap">
 
-        <label class="form-label">시작일</label>
-        <input class="form-input" type="date" />
+    <!-- ── HOME ─────────────────────────────────── -->
+    <section class="page active" id="pageHome">
 
-        <label class="form-label">메모</label>
-        <textarea class="form-input" rows="2" placeholder="투약량, 렌즈 규격 등"></textarea>
+      <div class="status-banner status-yellow">
+        <span class="status-icon">👁</span>
+        <div>
+          <div class="status-title">안축장 주의 구간</div>
+          <div class="status-sub">최근 6개월 +0.28 mm 성장</div>
+        </div>
+        <span class="status-badge watch">WATCH</span>
       </div>
-      <div class="modal-footer">
-        <button class="btn-secondary" onclick="closeModal('treatModal')">취소</button>
-        <button class="btn-primary" onclick="saveRecord('treatModal')">저장</button>
+
+      <!-- Today's treatment -->
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-title">오늘의 치료</span>
+          <span class="section-date" id="todayDate"></span>
+        </div>
+        <div class="treatment-list" id="todayTreatments">
+          <!-- rendered by JS -->
+        </div>
       </div>
+
+      <!-- Axial length summary -->
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-title">안축장 현황</span>
+          <button class="link-btn" onclick="navigate('pageAnalytics')">전체 보기 →</button>
+        </div>
+        <div class="axial-summary">
+          <div class="axial-eye">
+            <div class="eye-label">우안 (OD)</div>
+            <div class="axial-value">24.82 <span class="unit">mm</span></div>
+            <div class="axial-change up">▲ +0.14 mm (3개월)</div>
+          </div>
+          <div class="divider-v"></div>
+          <div class="axial-eye">
+            <div class="eye-label">좌안 (OS)</div>
+            <div class="axial-value">24.91 <span class="unit">mm</span></div>
+            <div class="axial-change up">▲ +0.16 mm (3개월)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Next appointment -->
+      <div class="section-card row-card">
+        <span class="card-icon">🏥</span>
+        <div>
+          <div class="card-label">다음 진료일</div>
+          <div class="card-value">2026년 7월 3일 (목)</div>
+          <div class="card-sub">한빛안과의원 · D-27</div>
+        </div>
+        <button class="small-btn">예약</button>
+      </div>
+
+      <!-- Compliance — dynamic -->
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-title">치료 순응도</span>
+          <button class="link-btn" onclick="navigate('pageRecords');setTimeout(()=>jumpToCalendar(),80)">캘린더 →</button>
+        </div>
+        <div class="streak-row" id="streakRow"><!-- JS --></div>
+        <div class="week-strip" id="weekStrip"><!-- JS --></div>
+      </div>
+
+      <!-- Lifestyle -->
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-title">오늘의 생활습관</span>
+          <button class="link-btn" onclick="openModal('lifeModal')">+ 기록</button>
+        </div>
+        <div class="lifestyle-row" id="homeLifestyle"><!-- JS --></div>
+      </div>
+
+    </section>
+
+    <!-- ── RECORDS ───────────────────────────────── -->
+    <section class="page" id="pageRecords">
+
+      <div class="tab-bar">
+        <button class="tab active" id="tabBtnExam"     onclick="switchTab(this,'tabExam')">검사기록</button>
+        <button class="tab"        id="tabBtnTreatment" onclick="switchTab(this,'tabTreatment')">치료기록</button>
+        <button class="tab"        id="tabBtnLifestyle" onclick="switchTab(this,'tabLifestyle')">생활습관</button>
+      </div>
+
+      <!-- Exam records -->
+      <div class="tab-panel active" id="tabExam">
+        <button class="fab" onclick="openModal('examModal')">+ 기록 추가</button>
+        <div id="examList"><!-- JS --></div>
+      </div>
+
+      <!-- Treatment calendar -->
+      <div class="tab-panel" id="tabTreatment">
+
+        <div class="cal-header">
+          <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
+          <span class="cal-title" id="calTitle"></span>
+          <button class="cal-nav-btn" onclick="changeMonth(1)">›</button>
+        </div>
+
+        <div class="cal-weekdays">
+          <span>일</span><span>월</span><span>화</span><span>수</span>
+          <span>목</span><span>금</span><span>토</span>
+        </div>
+        <div class="cal-grid" id="calGrid"><!-- JS --></div>
+
+        <div class="cal-legend">
+          <span><span class="cl-dot done-dot"></span>완료</span>
+          <span><span class="cl-dot partial-dot"></span>부분완료</span>
+          <span><span class="cl-dot missed-dot"></span>미완료</span>
+          <span><span class="cl-dot future-dot"></span>예정</span>
+        </div>
+
+        <div class="cal-stats" id="calStats"><!-- JS --></div>
+
+      </div>
+
+      <!-- Lifestyle records -->
+      <div class="tab-panel" id="tabLifestyle">
+        <button class="fab" onclick="openModal('lifeModal')">+ 기록 추가</button>
+        <div class="lifestyle-chart-wrap">
+          <div class="section-header">
+            <span class="section-title">최근 7일 야외활동</span>
+            <span class="section-date">목표: 2시간/일</span>
+          </div>
+          <canvas id="outdoorChart" height="180"></canvas>
+        </div>
+        <div class="lifestyle-chart-wrap" style="margin-top:12px">
+          <div class="section-header">
+            <span class="section-title">최근 7일 스마트폰 사용</span>
+            <span class="section-date">권장: 2시간 이하</span>
+          </div>
+          <canvas id="phoneChart" height="180"></canvas>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ── ANALYTICS ─────────────────────────────── -->
+    <section class="page" id="pageAnalytics">
+
+      <div class="tab-bar">
+        <button class="tab active" onclick="switchTab(this,'tabAxial')">안축장</button>
+        <button class="tab"        onclick="switchTab(this,'tabSer')">SER</button>
+        <button class="tab"        onclick="switchTab(this,'tabCompliance')">순응도</button>
+      </div>
+
+      <div class="tab-panel active" id="tabAxial">
+        <div class="chart-card">
+          <div class="section-header">
+            <span class="section-title">안축장 변화 추이</span>
+            <div class="legend-row">
+              <span class="dot blue"></span>우안
+              <span class="dot orange"></span>좌안
+            </div>
+          </div>
+          <canvas id="axialChart" height="220"></canvas>
+        </div>
+        <div class="growth-rate-card">
+          <div class="gr-title">연간 성장률 분석</div>
+          <div class="gr-row">
+            <span class="gr-label">우안 (최근 6개월 환산)</span>
+            <span class="gr-val watch">+0.28 mm/yr</span>
+            <span class="gr-badge watch">WATCH</span>
+          </div>
+          <div class="gr-row">
+            <span class="gr-label">좌안 (최근 6개월 환산)</span>
+            <span class="gr-val watch">+0.32 mm/yr</span>
+            <span class="gr-badge watch">WATCH</span>
+          </div>
+          <div class="gr-legend">
+            <span class="gr-item stable">■ Stable &lt;0.20</span>
+            <span class="gr-item watch">■ Watch 0.20–0.35</span>
+            <span class="gr-item rapid">■ Rapid &gt;0.35</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tabSer">
+        <div class="chart-card">
+          <div class="section-header">
+            <span class="section-title">굴절값(SER) 변화</span>
+            <div class="legend-row">
+              <span class="dot blue"></span>우안
+              <span class="dot orange"></span>좌안
+            </div>
+          </div>
+          <canvas id="serChart" height="220"></canvas>
+        </div>
+        <div class="info-box">
+          <div class="info-title">ℹ SER 해석 가이드</div>
+          <div class="info-text">SER(Spherical Equivalent Refraction)은 근시 정도를 나타내는 굴절값입니다. 음수가 클수록 근시가 강합니다. 연간 −0.50D 이상 진행 시 전문의 상담을 권장합니다.</div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tabCompliance">
+        <div class="chart-card">
+          <div class="section-header">
+            <span class="section-title">월별 치료 순응도</span>
+          </div>
+          <canvas id="complianceChart" height="220"></canvas>
+        </div>
+        <div class="compliance-summary" id="complianceSummary"><!-- JS --></div>
+      </div>
+
+    </section>
+
+    <!-- ── SETTINGS ───────────────────────────────── -->
+    <section class="page" id="pageSettings">
+      <div class="settings-profile">
+        <div class="profile-avatar">👦</div>
+        <div>
+          <div class="profile-name">김민준</div>
+          <div class="profile-sub">만 9세 · 2017년 3월생</div>
+        </div>
+        <button class="small-btn" onclick="openModal('childModal')">편집</button>
+      </div>
+
+      <div class="settings-group">
+        <div class="sg-label">자녀 관리</div>
+        <div class="sg-item" onclick="openModal('childModal')"><span class="sg-icon">👶</span> 자녀 프로필 수정 <span class="sg-arr">›</span></div>
+        <div class="sg-item"><span class="sg-icon">👥</span> 보호자 초대 <span class="sg-arr">›</span></div>
+      </div>
+
+      <div class="settings-group">
+        <div class="sg-label">알림 관리</div>
+        <div class="sg-item toggle-item">
+          <span><span class="sg-icon">🔔</span> 치료 알림</span>
+          <label class="toggle"><input type="checkbox" checked /><span class="slider"></span></label>
+        </div>
+        <div class="sg-item toggle-item">
+          <span><span class="sg-icon">📅</span> 진료 일정 알림</span>
+          <label class="toggle"><input type="checkbox" checked /><span class="slider"></span></label>
+        </div>
+        <div class="sg-item toggle-item">
+          <span><span class="sg-icon">📊</span> 월간 리포트</span>
+          <label class="toggle"><input type="checkbox" /><span class="slider"></span></label>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <div class="sg-label">계정</div>
+        <div class="sg-item"><span class="sg-icon">👤</span> jhl8397@gmail.com <span class="sg-arr">›</span></div>
+        <div class="sg-item"><span class="sg-icon">🔒</span> 개인정보 처리방침 <span class="sg-arr">›</span></div>
+        <div class="sg-item text-danger" onclick="confirmReset()"><span class="sg-icon">🗑</span> 데모 데이터 초기화</div>
+        <div class="sg-item text-danger"><span class="sg-icon">🚪</span> 로그아웃</div>
+      </div>
+
+      <div class="app-version">EyeBody v0.1.0 (Demo)</div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" onclick="navigate('pageHome')"      id="navHome">
+      <span class="nav-icon">🏠</span><span class="nav-label">홈</span>
+    </button>
+    <button class="nav-btn" onclick="navigate('pageRecords')"    id="navRecords">
+      <span class="nav-icon">📋</span><span class="nav-label">기록</span>
+    </button>
+    <button class="nav-btn" onclick="navigate('pageAnalytics')"  id="navAnalytics">
+      <span class="nav-icon">📊</span><span class="nav-label">분석</span>
+    </button>
+    <button class="nav-btn" onclick="navigate('pageSettings')"   id="navSettings">
+      <span class="nav-icon">⚙️</span><span class="nav-label">설정</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ── Modals ─────────────────────────────────── -->
+
+<div class="modal-overlay" id="examModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">검사기록 추가</span>
+      <button class="modal-close" onclick="closeModal('examModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <label class="form-label">검사일</label>
+      <input class="form-input" type="date" id="examDate" />
+      <label class="form-label">안과</label>
+      <input class="form-input" type="text" id="examClinic" placeholder="병원명" />
+      <div class="form-row">
+        <div>
+          <label class="form-label">안축장 우안 (mm)</label>
+          <input class="form-input" type="number" step="0.01" id="examAxOD" placeholder="예: 24.82" />
+        </div>
+        <div>
+          <label class="form-label">안축장 좌안 (mm)</label>
+          <input class="form-input" type="number" step="0.01" id="examAxOS" placeholder="예: 24.91" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label class="form-label">SER 우안 (D)</label>
+          <input class="form-input" type="number" step="0.25" id="examSerOD" placeholder="예: -3.25" />
+        </div>
+        <div>
+          <label class="form-label">SER 좌안 (D)</label>
+          <input class="form-input" type="number" step="0.25" id="examSerOS" placeholder="예: -3.50" />
+        </div>
+      </div>
+      <label class="form-label">메모</label>
+      <textarea class="form-input" rows="2" id="examNote" placeholder="특이사항 등"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('examModal')">취소</button>
+      <button class="btn-primary" onclick="saveExamRecord()">저장</button>
     </div>
   </div>
+</div>
 
-  <!-- Lifestyle modal -->
-  <div class="modal-overlay" id="lifeModal">
-    <div class="modal">
-      <div class="modal-header">
-        <span class="modal-title">생활습관 기록</span>
-        <button class="modal-close" onclick="closeModal('lifeModal')">✕</button>
-      </div>
-      <div class="modal-body">
-        <label class="form-label">날짜</label>
-        <input class="form-input" type="date" />
-
-        <label class="form-label">야외활동 시간</label>
-        <input class="form-input" type="number" min="0" max="24" step="0.5" placeholder="시간 (예: 1.5)" />
-
-        <label class="form-label">스마트폰 사용 시간</label>
-        <input class="form-input" type="number" min="0" max="24" step="0.5" placeholder="시간 (예: 2.0)" />
-
-        <label class="form-label">수면 시간</label>
-        <input class="form-input" type="number" min="0" max="24" step="0.5" placeholder="시간 (예: 9.0)" />
-      </div>
-      <div class="modal-footer">
-        <button class="btn-secondary" onclick="closeModal('lifeModal')">취소</button>
-        <button class="btn-primary" onclick="saveRecord('lifeModal')">저장</button>
-      </div>
+<div class="modal-overlay" id="lifeModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">생활습관 기록</span>
+      <button class="modal-close" onclick="closeModal('lifeModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <label class="form-label">날짜</label>
+      <input class="form-input" type="date" id="lifeDate" />
+      <label class="form-label">야외활동 시간 (h)</label>
+      <input class="form-input" type="number" min="0" max="24" step="0.5" id="lifeOutdoor" placeholder="예: 1.5" />
+      <label class="form-label">스마트폰 사용 시간 (h)</label>
+      <input class="form-input" type="number" min="0" max="24" step="0.5" id="lifePhone" placeholder="예: 2.0" />
+      <label class="form-label">수면 시간 (h)</label>
+      <input class="form-input" type="number" min="0" max="24" step="0.5" id="lifeSleep" placeholder="예: 9.0" />
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('lifeModal')">취소</button>
+      <button class="btn-primary" onclick="saveLifestyleRecord()">저장</button>
     </div>
   </div>
+</div>
 
-  <!-- Child profile modal -->
-  <div class="modal-overlay" id="childModal">
-    <div class="modal">
-      <div class="modal-header">
-        <span class="modal-title">자녀 프로필</span>
-        <button class="modal-close" onclick="closeModal('childModal')">✕</button>
-      </div>
-      <div class="modal-body">
-        <label class="form-label">이름</label>
-        <input class="form-input" type="text" value="김민준" />
-
-        <label class="form-label">생년월일</label>
-        <input class="form-input" type="date" value="2017-03-15" />
-
-        <label class="form-label">성별</label>
-        <select class="form-input">
-          <option selected>남자</option>
-          <option>여자</option>
-        </select>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-secondary" onclick="closeModal('childModal')">취소</button>
-        <button class="btn-primary" onclick="saveRecord('childModal')">저장</button>
-      </div>
+<div class="modal-overlay" id="childModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">자녀 프로필</span>
+      <button class="modal-close" onclick="closeModal('childModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <label class="form-label">이름</label>
+      <input class="form-input" type="text" value="김민준" />
+      <label class="form-label">생년월일</label>
+      <input class="form-input" type="date" value="2017-03-15" />
+      <label class="form-label">성별</label>
+      <select class="form-input"><option selected>남자</option><option>여자</option></select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('childModal')">취소</button>
+      <button class="btn-primary" onclick="closeModal('childModal');showToast('저장되었습니다')">저장</button>
     </div>
   </div>
+</div>
 
-  <!-- Toast -->
-  <div class="toast" id="toast"></div>
+<!-- Day detail modal -->
+<div class="modal-overlay" id="dayModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="dayModalTitle"></span>
+      <button class="modal-close" onclick="closeModal('dayModal')">✕</button>
+    </div>
+    <div class="modal-body" id="dayModalBody"></div>
+    <div class="modal-footer">
+      <button class="btn-primary" onclick="closeModal('dayModal')">확인</button>
+    </div>
+  </div>
+</div>
 
-  <script src="js/app.js"></script>
+<div class="toast" id="toast"></div>
+
+<script src="js/app.js"></script>
 </body>
 </html>

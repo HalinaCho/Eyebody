@@ -240,3 +240,77 @@ input:checked + .slider::before { transform: translateX(20px); }
 /* ── Toast ────────────────────────────────── */
 .toast { position: fixed; bottom: calc(var(--nav-h) + 12px); left: 50%; transform: translateX(-50%) translateY(20px); background: var(--gray-800); color: white; padding: 10px 20px; border-radius: 20px; font-size: 14px; font-weight: 600; opacity: 0; pointer-events: none; transition: all .3s; z-index: 300; white-space: nowrap; }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── Streak row ───────────────────────────── */
+.streak-row { display: flex; align-items: center; justify-content: space-around; padding: 4px 0 12px; }
+.streak-item { text-align: center; flex: 1; }
+.streak-num { font-size: 22px; font-weight: 800; color: var(--primary); }
+.streak-num.good { color: var(--green); }
+.streak-label { font-size: 11px; color: var(--gray-400); margin-top: 3px; }
+.streak-divider { width: 1px; height: 36px; background: var(--gray-200); }
+
+/* ── Week strip ───────────────────────────── */
+.week-strip { display: flex; justify-content: space-between; padding-top: 4px; }
+.strip-day { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+.strip-label { font-size: 10px; color: var(--gray-400); font-weight: 600; }
+.strip-num   { font-size: 10px; color: var(--gray-400); }
+.strip-dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+.strip-dot.done    { background: var(--green);  color: white; }
+.strip-dot.partial { background: var(--yellow); color: white; }
+.strip-dot.missed  { background: #FECACA;       color: var(--red); }
+.strip-dot.future  { background: var(--gray-100); color: var(--gray-400); }
+.strip-today .strip-dot { outline: 2px solid var(--primary); outline-offset: 2px; }
+.strip-today .strip-label,
+.strip-today .strip-num   { color: var(--primary); font-weight: 700; }
+
+/* ── Calendar ─────────────────────────────── */
+.cal-header { display: flex; align-items: center; justify-content: space-between; padding: 4px 0 10px; }
+.cal-title  { font-size: 16px; font-weight: 700; }
+.cal-nav-btn { width: 36px; height: 36px; border: none; background: var(--gray-100); border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gray-600); }
+.cal-nav-btn:hover { background: var(--gray-200); }
+
+.cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 4px; }
+.cal-weekdays span { text-align: center; font-size: 11px; font-weight: 700; color: var(--gray-400); padding: 4px 0; }
+
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 12px; }
+.cal-day { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 8px; cursor: pointer; transition: transform .1s; position: relative; gap: 1px; }
+.cal-day:not(.empty):not(.future):active { transform: scale(.93); }
+.cal-day.empty  { background: transparent; cursor: default; }
+.cal-day.future { background: var(--gray-50); cursor: default; }
+.cal-day.done    { background: #D1FAE5; }
+.cal-day.partial { background: #FEF3C7; }
+.cal-day.missed  { background: #FEE2E2; }
+.cal-today { outline: 2px solid var(--primary); outline-offset: -2px; }
+
+.cal-day-num  { font-size: 12px; font-weight: 600; color: var(--gray-700); line-height: 1; }
+.cal-day-icon { font-size: 10px; line-height: 1; }
+.cal-day.done    .cal-day-icon { color: var(--green); }
+.cal-day.partial .cal-day-icon { color: var(--yellow); }
+.cal-day.missed  .cal-day-icon { color: var(--red); }
+.cal-day.future  .cal-day-num  { color: var(--gray-300); }
+.cal-today .cal-day-num { color: var(--primary); font-weight: 800; }
+
+.cal-legend { display: flex; gap: 12px; justify-content: center; margin-bottom: 12px; font-size: 12px; color: var(--gray-600); align-items: center; }
+.cl-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+.done-dot    { background: #D1FAE5; border: 1.5px solid var(--green); }
+.partial-dot { background: #FEF3C7; border: 1.5px solid var(--yellow); }
+.missed-dot  { background: #FEE2E2; border: 1.5px solid var(--red); }
+.future-dot  { background: var(--gray-100); border: 1.5px solid var(--gray-300); }
+
+.cal-stat-row { display: flex; gap: 8px; }
+.cal-stat { flex: 1; background: var(--gray-50); border-radius: 10px; padding: 12px 8px; text-align: center; }
+.cst-num   { display: block; font-size: 18px; font-weight: 800; }
+.cst-label { display: block; font-size: 11px; color: var(--gray-400); margin-top: 3px; }
+.cst-num.good    { color: var(--green); }
+.cst-num.partial { color: var(--yellow); }
+.cst-num.missed  { color: var(--red); }
+.cst-num.primary { color: var(--primary); }
+
+/* ── Day modal rows ────────────────────────── */
+.day-modal-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-top: 1px solid var(--gray-100); }
+.day-modal-row:first-child { border-top: none; }
+.day-modal-name { font-size: 15px; font-weight: 600; }
+
+/* ── Empty state ──────────────────────────── */
+.empty-state { text-align: center; padding: 40px 20px; color: var(--gray-400); font-size: 14px; line-height: 1.7; }
+.no-data-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; color: var(--gray-400); font-size: 14px; width: 100%; }
