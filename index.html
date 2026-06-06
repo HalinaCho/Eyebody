@@ -171,34 +171,68 @@
       </div>
 
       <div class="tab-panel active" id="tabAxial">
-        <div class="chart-card">
-          <div class="section-header">
-            <span class="section-title">안축장 변화 추이</span>
-            <div class="legend-row">
-              <span class="dot blue"></span>우안
-              <span class="dot orange"></span>좌안
+
+        <!-- Percentile summary card -->
+        <div class="pct-summary" id="axialPctCard"><!-- JS --></div>
+
+        <!-- View toggle -->
+        <div class="view-toggle">
+          <button class="vt-btn active" id="vtTrend" onclick="switchAxialView('trend')">📈 변화 추이</button>
+          <button class="vt-btn"        id="vtPct"   onclick="switchAxialView('pct')">👥 또래 비교</button>
+        </div>
+
+        <!-- Trend view -->
+        <div id="axialTrendView">
+          <div class="chart-card">
+            <div class="section-header">
+              <span class="section-title">안축장 변화 추이</span>
+              <div class="legend-row">
+                <span class="dot blue"></span>우안
+                <span class="dot orange"></span>좌안
+              </div>
+            </div>
+            <canvas id="axialChart" height="220"></canvas>
+          </div>
+          <div class="growth-rate-card">
+            <div class="gr-title">연간 성장률 분석</div>
+            <div class="gr-row">
+              <span class="gr-label">우안 (최근 6개월 환산)</span>
+              <span class="gr-val watch">+0.28 mm/yr</span>
+              <span class="gr-badge watch">WATCH</span>
+            </div>
+            <div class="gr-row">
+              <span class="gr-label">좌안 (최근 6개월 환산)</span>
+              <span class="gr-val watch">+0.32 mm/yr</span>
+              <span class="gr-badge watch">WATCH</span>
+            </div>
+            <div class="gr-legend">
+              <span class="gr-item stable">■ Stable &lt;0.20</span>
+              <span class="gr-item watch">■ Watch 0.20–0.35</span>
+              <span class="gr-item rapid">■ Rapid &gt;0.35</span>
             </div>
           </div>
-          <canvas id="axialChart" height="220"></canvas>
         </div>
-        <div class="growth-rate-card">
-          <div class="gr-title">연간 성장률 분석</div>
-          <div class="gr-row">
-            <span class="gr-label">우안 (최근 6개월 환산)</span>
-            <span class="gr-val watch">+0.28 mm/yr</span>
-            <span class="gr-badge watch">WATCH</span>
+
+        <!-- Percentile view -->
+        <div id="axialPctView" style="display:none">
+          <div class="chart-card">
+            <div class="section-header">
+              <span class="section-title">또래 안축장 백분위 비교</span>
+              <div class="legend-row">
+                <span class="dot blue"></span>우안
+                <span class="dot orange"></span>좌안
+              </div>
+            </div>
+            <canvas id="percentileChart" height="250"></canvas>
+            <div class="pct-bands-legend">
+              <span class="pbl-item"><span class="pbl-band"></span>정상범위 (P25–P75)</span>
+              <span class="pbl-item pbl-median">— P50 중앙값</span>
+              <span class="pbl-item pbl-p90" style="color:var(--red)">— P90</span>
+            </div>
           </div>
-          <div class="gr-row">
-            <span class="gr-label">좌안 (최근 6개월 환산)</span>
-            <span class="gr-val watch">+0.32 mm/yr</span>
-            <span class="gr-badge watch">WATCH</span>
-          </div>
-          <div class="gr-legend">
-            <span class="gr-item stable">■ Stable &lt;0.20</span>
-            <span class="gr-item watch">■ Watch 0.20–0.35</span>
-            <span class="gr-item rapid">■ Rapid &gt;0.35</span>
-          </div>
+          <div class="pct-disclaimer">* 한국 아동 근시 연구 기반 참고 기준값입니다. 정확한 평가는 전문의와 상담하세요.</div>
         </div>
+
       </div>
 
       <div class="tab-panel" id="tabSer">

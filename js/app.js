@@ -500,6 +500,184 @@ function initLifestyleCharts() {
   }], { scales: { x: { grid:{display:false} }, y: { min:0, max:6, ticks:{callback:v=>v+'h'} } } });
 }
 
+// ── Axial length percentile norms (Korean boys, approx.) ───
+// Source: Korean pediatric myopia studies (참고 기준값)
+const NORM_AGES = [6, 7, 8, 9, 10, 11, 12, 13];
+const NORM = {
+  p10: [21.6, 21.9, 22.1, 22.4, 22.7, 22.9, 23.1, 23.4],
+  p25: [22.0, 22.3, 22.6, 22.9, 23.2, 23.5, 23.8, 24.1],
+  p50: [22.5, 22.8, 23.1, 23.5, 23.8, 24.2, 24.5, 24.8],
+  p75: [23.0, 23.3, 23.7, 24.1, 24.5, 24.8, 25.2, 25.5],
+  p90: [23.5, 23.8, 24.2, 24.7, 25.1, 25.4, 25.8, 26.1],
+};
+const NORM_BANDS = [
+  { key:'p10', pct:10, color:'rgba(107,114,128,.0)' },
+  { key:'p25', pct:25, color:'rgba(59,130,246,.12)' },
+  { key:'p50', pct:50, color:'rgba(59,130,246,.0)' },
+  { key:'p75', pct:75, color:'rgba(59,130,246,.12)' },
+  { key:'p90', pct:90, color:'rgba(239,68,68,.0)' },
+];
+
+// Child birth date for age calculation
+const BIRTH_DATE = new Date(2017, 2, 15); // 2017-03-15
+
+function ageAt(dateStr) {
+  const d = parseDate(dateStr);
+  return (d - BIRTH_DATE) / (365.25 * 24 * 3600 * 1000);
+}
+
+function interpNorm(key, ageYears) {
+  const ages = NORM_AGES, vals = NORM[key];
+  if (ageYears <= ages[0]) return vals[0];
+  if (ageYears >= ages[ages.length - 1]) return vals[vals.length - 1];
+  const i = ages.findIndex(a => a > ageYears) - 1;
+  const t = (ageYears - ages[i]) / (ages[i + 1] - ages[i]);
+  return vals[i] + (vals[i + 1] - vals[i]) * t;
+}
+
+function calcPercentile(al, ageYears) {
+  const bands = [
+    { pct: 3,  val: interpNorm('p10', ageYears) - 0.9 },
+    { pct: 10, val: interpNorm('p10', ageYears) },
+    { pct: 25, val: interpNorm('p25', ageYears) },
+    { pct: 50, val: interpNorm('p50', ageYears) },
+    { pct: 75, val: interpNorm('p75', ageYears) },
+    { pct: 90, val: interpNorm('p90', ageYears) },
+    { pct: 97, val: interpNorm('p90', ageYears) + 0.9 },
+  ];
+  if (al <= bands[0].val) return bands[0].pct;
+  if (al >= bands[bands.length - 1].val) return bands[bands.length - 1].pct;
+  for (let i = 0; i < bands.length - 1; i++) {
+    if (al >= bands[i].val && al < bands[i + 1].val) {
+      const t = (al - bands[i].val) / (bands[i + 1].val - bands[i].val);
+      return Math.round(bands[i].pct + (bands[i + 1].pct - bands[i].pct) * t);
+    }
+  }
+  return 50;
+}
+
+function pctLabel(pct) {
+  if (pct >= 90) return { text: `상위 ${100 - pct}%`, cls: 'pct-high' };
+  if (pct >= 75) return { text: `상위 ${100 - pct}%`, cls: 'pct-watch' };
+  if (pct >= 25) return { text: '정상 범위', cls: 'pct-normal' };
+  return { text: `하위 ${pct}%`, cls: 'pct-low' };
+}
+
+function renderAxialPctCard() {
+  const el = document.getElementById('axialPctCard');
+  if (!el) return;
+  const currentAge = ageAt(TODAY);
+  const lastOD = axialOD[axialOD.length - 1];
+  const lastOS = axialOS[axialOS.length - 1];
+  const pOD = calcPercentile(lastOD, currentAge);
+  const pOS = calcPercentile(lastOS, currentAge);
+  const lOD = pctLabel(pOD);
+  const lOS = pctLabel(pOS);
+
+  el.innerHTML = `
+    <div class="pct-header">또래 안축장 비교 <span class="pct-age">만 ${Math.floor(currentAge)}세 남아 기준</span></div>
+    <div class="pct-panels">
+      <div class="pct-panel">
+        <div class="pct-eye-label">우안 (OD)</div>
+        <div class="pct-mm">${lastOD.toFixed(2)}<span class="pct-unit">mm</span></div>
+        <div class="pct-rank ${lOD.cls}">${pOD}번째 백분위</div>
+        <div class="pct-sub ${lOD.cls}">${lOD.text}</div>
+      </div>
+      <div class="pct-divider"></div>
+      <div class="pct-panel">
+        <div class="pct-eye-label">좌안 (OS)</div>
+        <div class="pct-mm">${lastOS.toFixed(2)}<span class="pct-unit">mm</span></div>
+        <div class="pct-rank ${lOS.cls}">${pOS}번째 백분위</div>
+        <div class="pct-sub ${lOS.cls}">${lOS.text}</div>
+      </div>
+    </div>
+    <div class="pct-interp">
+      ${pOD >= 90
+        ? `현재 안축장은 또래 중 상위 ${100 - pOD}% 수준으로 지속적인 치료와 모니터링이 권장됩니다.`
+        : pOD >= 75
+          ? `안축장이 또래 평균보다 높습니다. 정기 검진을 유지하세요.`
+          : `안축장이 또래 정상 범위 내에 있습니다.`}
+    </div>`;
+}
+
+function switchAxialView(view) {
+  document.getElementById('axialTrendView').style.display = view === 'trend' ? '' : 'none';
+  document.getElementById('axialPctView').style.display   = view === 'pct'   ? '' : 'none';
+  document.getElementById('vtTrend').classList.toggle('active', view === 'trend');
+  document.getElementById('vtPct').classList.toggle('active',   view === 'pct');
+  if (view === 'trend') drawAxialChart();
+  if (view === 'pct')   drawPercentileChart();
+}
+
+function drawPercentileChart() {
+  // Build norm band data at 0.25-year intervals from age 7 to 13
+  const ages = [];
+  for (let a = 7; a <= 13; a += 0.25) ages.push(parseFloat(a.toFixed(2)));
+
+  const normPt = key => ages.map(a => ({ x: a, y: parseFloat(interpNorm(key, a).toFixed(3)) }));
+
+  // Child exam points
+  const examHistory = [
+    { date:'2024-08-01', od:24.10, os:24.18 },
+    { date:'2024-11-01', od:24.22, os:24.30 },
+    { date:'2025-02-01', od:24.36, os:24.42 },
+    { date:'2025-05-01', od:24.48, os:24.55 },
+    { date:'2025-08-01', od:24.54, os:24.59 },
+    { date:'2025-11-01', od:24.61, os:24.67 },
+    { date:'2026-02-01', od:24.68, os:24.75 },
+    { date:'2026-05-01', od:24.82, os:24.91 },
+  ];
+  const childOD = examHistory.map(e => ({ x: parseFloat(ageAt(e.date).toFixed(2)), y: e.od }));
+  const childOS = examHistory.map(e => ({ x: parseFloat(ageAt(e.date).toFixed(2)), y: e.os }));
+
+  makeChart('percentileChart', 'line', [], [
+    // P25 fill to P75
+    { label:'P25', data: normPt('p25'), borderColor:'rgba(59,130,246,.25)', borderWidth:1,
+      borderDash:[4,4], fill:'+1', backgroundColor:'rgba(59,130,246,.08)', pointRadius:0, tension:.4 },
+    { label:'P75', data: normPt('p75'), borderColor:'rgba(59,130,246,.25)', borderWidth:1,
+      borderDash:[4,4], fill:false, pointRadius:0, tension:.4 },
+    // P50 median
+    { label:'P50', data: normPt('p50'), borderColor:'rgba(59,130,246,.5)', borderWidth:1.5,
+      borderDash:[6,3], fill:false, pointRadius:0, tension:.4 },
+    // P90
+    { label:'P90', data: normPt('p90'), borderColor:'rgba(239,68,68,.45)', borderWidth:1.5,
+      borderDash:[4,3], fill:false, pointRadius:0, tension:.4 },
+    // P10
+    { label:'P10', data: normPt('p10'), borderColor:'rgba(107,114,128,.3)', borderWidth:1,
+      borderDash:[3,3], fill:false, pointRadius:0, tension:.4 },
+    // Child measurements
+    { label:'우안(OD)', data: childOD, borderColor:'#3B82F6', backgroundColor:'#3B82F6',
+      borderWidth:2.5, pointRadius:5, pointHoverRadius:7, fill:false, tension:.3 },
+    { label:'좌안(OS)', data: childOS, borderColor:'#F97316', backgroundColor:'#F97316',
+      borderWidth:2.5, pointRadius:5, pointHoverRadius:7, fill:false, tension:.3 },
+  ], {
+    scales: {
+      x: { type:'linear', min:7, max:12.5,
+        title:{ display:true, text:'나이 (세)', font:{size:11} },
+        ticks:{ stepSize:1, callback: v => v+'세', font:{size:11} },
+        grid:{ color:'#F3F4F6' }
+      },
+      y: { min:21.5, max:26.5,
+        title:{ display:true, text:'안축장 (mm)', font:{size:11} },
+        ticks:{ callback: v => v.toFixed(1), font:{size:11} },
+        grid:{ color:'#F3F4F6' }
+      }
+    },
+    plugins: {
+      legend:{ display:false },
+      tooltip:{
+        callbacks:{
+          label: ctx => {
+            const n = ctx.dataset.label;
+            if (['P25','P75','P50','P90','P10'].includes(n)) return `${n}: ${ctx.parsed.y.toFixed(2)}mm`;
+            return `${n}: ${ctx.parsed.y.toFixed(2)}mm (나이 ${ctx.parsed.x.toFixed(1)}세)`;
+          }
+        }
+      }
+    }
+  });
+}
+
 // ── Analytics charts ───────────────────────────────────────
 const examDates = ['2024-08','2024-11','2025-02','2025-05','2025-08','2025-11','2026-02','2026-05'];
 const axialOD   = [24.10,24.22,24.36,24.48,24.54,24.61,24.68,24.82];
@@ -557,6 +735,7 @@ function drawComplianceChart() {
 }
 
 function initAnalyticsCharts() {
+  renderAxialPctCard();
   drawAxialChart();
   drawComplianceChart();
 }
